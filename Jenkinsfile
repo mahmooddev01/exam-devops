@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
+        DOCKERHUB_CREDENTIALS = 'dockerhub-credentials'
         IMAGE_NAME = 'mahmooddev/examen_devops'
         IMAGE_TAG = 'latest'
         RENDER_API_KEY = credentials('render-api-key')
