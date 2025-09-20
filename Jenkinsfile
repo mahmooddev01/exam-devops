@@ -5,8 +5,8 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
         IMAGE_NAME = 'mahmooddev/examen_devops'
         IMAGE_TAG = 'latest'
-//         RENDER_API_KEY = credentials('render-api-key')
-//         RENDER_SERVICE_ID = 'srv-d37ath3e5dus7396vdd0'
+        RENDER_API_KEY = credentials('render-api-key')
+        RENDER_SERVICE_ID = 'srv-d37ath3e5dus7396vdd0'
     }
 
     stages {
@@ -52,30 +52,30 @@ pipeline {
             }
         }
 
-//         stage('Deploy to Render') {
-//             steps {
-//                 echo "Déploiement sur Render via Docker..."
-//                 script {
-//                     retry(3) {
-//                         sh '''
-//                         curl -X POST \
-//                           -H "Accept: application/json" \
-//                           -H "Authorization: Bearer ${RENDER_API_KEY}" \
-//                           -d '{ "dockerImage": "${IMAGE_NAME}:${IMAGE_TAG}" }' \
-//                           https://api.render.com/v1/services/${RENDER_SERVICE_ID}/deploys
-//                         '''
-//                     }
-//                 }
-//             }
-//         }
+        stage('Deploy to Render') {
+            steps {
+                echo "Déploiement sur Render via Docker..."
+                script {
+                    retry(3) {
+                        sh '''
+                        curl -X POST \
+                          -H "Accept: application/json" \
+                          -H "Authorization: Bearer ${RENDER_API_KEY}" \
+                          -d '{ "dockerImage": "${IMAGE_NAME}:${IMAGE_TAG}" }' \
+                          https://api.render.com/v1/services/${RENDER_SERVICE_ID}/deploys
+                        '''
+                    }
+                }
+            }
+        }
     }
 
-//     post {
-//         failure {
-//             echo '❌ Build, test ou déploiement échoué'
-//         }
-//         success {
-//             echo '✅ Build, push Docker et déploiement Render terminés'
-//         }
+    post {
+        failure {
+            echo '❌ Build, test ou déploiement échoué'
+        }
+        success {
+            echo '✅ Build, push Docker et déploiement Render terminés'
+        }
     }
 }
